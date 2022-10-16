@@ -1,6 +1,5 @@
 ﻿using Booking_System.Models;
 using Booking_System.Storage;
-using Data_Layer.Service;
 using System.Collections.ObjectModel;
 
 namespace Booking_System.Service
@@ -36,11 +35,14 @@ namespace Booking_System.Service
             {
                 Booking booking = new Booking(customerId, employeeId, date, start, end);
 
-                _bookingStorage.createBooking()
+                _bookingStorage.createBooking(booking);
+
+                return 1;
             }
-            catch
+            catch (Exception)
             {
 
+                throw;
             }
         }
 
