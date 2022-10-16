@@ -11,5 +11,30 @@ namespace Booking_System.Context
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Employee> Employess { get; set; }
         public DbSet<SmsMessage> SmsMessages { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            Seed(builder);
+            base.OnModelCreating(builder);
+        }
+
+        public static void Seed(ModelBuilder builder)
+        {
+            builder.Entity<Customer>().HasData(
+                new Customer { Id = 1, FirstName = "Sebastian", LastName = "Hansen", PhoneNumber = "42424242"},
+                new Customer { Id = 2, FirstName = "Phil", LastName = "Andersen", PhoneNumber = "84848484" }
+                );
+
+            builder.Entity<Employee>().HasData(
+                new Employee { Id = 1, Name = "Dr. Isenborg", Email = "isenborg@gmail.com", PhoneNumber = "31313131" },
+                new Employee { Id = 2, Name = "Dr. Wegner", Email = "wegner@gmail.com", PhoneNumber = "75757575"}
+                );
+
+            builder.Entity<Booking>().HasData(
+                   new Booking { Id = 1, CustomerId = 1, EmployeeId = 1, Date = DateTime.UtcNow, Start = DateTime.UtcNow, End = DateTime.UtcNow },
+                   new Booking { Id = 2, CustomerId = 2, EmployeeId = 2, Date = DateTime.UtcNow, Start = DateTime.UtcNow, End = DateTime.UtcNow },
+                   new Booking { Id = 3, CustomerId = 2, EmployeeId = 1, Date = DateTime.UtcNow, Start = DateTime.UtcNow, End = DateTime.UtcNow }
+                );
+        }
     }
 }
