@@ -1,22 +1,33 @@
 ﻿using Booking_System.Models;
+using Booking_System.Storage;
 
 namespace Booking_System.Service
 {
     public interface IEmployeeService
     {
-        int createEmployee(Employee employee);
-        Employee getEmployeeById(int employeeId);
+        Task<int> createEmployee(Employee employee);
+        Task<Employee> getEmployeeById(int employeeId);
     }
     public class EmployeeService : IEmployeeService
     {
-        public int createEmployee(Employee employee)
+        private readonly IEmployeeStorage _context;
+
+        public EmployeeService(IEmployeeStorage context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<int> createEmployee(Employee employee)
+        {
+            var employeeid = await _context.createEmployee(employee);
+
+            return employeeid;
         }
 
-        public Employee getEmployeeById(int employeeId)
+        public async Task<Employee> getEmployeeById(int employeeId)
         {
-            throw new NotImplementedException();
+            var employee = await _context.getEmployeeById(employeeId);
+
+            return employee;
         }
     }
 }

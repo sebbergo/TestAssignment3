@@ -21,8 +21,8 @@ namespace Booking_System.Context
         public static void Seed(ModelBuilder builder)
         {
             builder.Entity<Customer>().HasData(
-                new Customer { Id = 1, FirstName = "Sebastian", LastName = "Hansen", PhoneNumber = "42424242"},
-                new Customer { Id = 2, FirstName = "Phil", LastName = "Andersen", PhoneNumber = "84848484" }
+                new Customer { Id = 1, FirstName = "Sebastian", LastName = "Hansen"},
+                new Customer { Id = 2, FirstName = "Phil", LastName = "Andersen"}
                 );
 
             builder.Entity<Employee>().HasData(

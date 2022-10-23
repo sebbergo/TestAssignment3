@@ -13,9 +13,6 @@ namespace Booking_System.Service
     public class BookingService : IBookingService
     {
         private readonly IBookingStorage _bookingStorage;
-        private readonly ICustomerStorage _customerStorage;
-        private readonly IEmployeeStorage _employeeStorage;
-        private readonly INotifications _notifications;
 
         public BookingService(IBookingStorage bookingStorage)
         {

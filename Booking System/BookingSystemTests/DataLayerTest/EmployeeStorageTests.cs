@@ -1,18 +1,23 @@
-using Booking_System.Context;
+﻿using Booking_System.Context;
 using Booking_System.Models;
 using Booking_System.Storage;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BookingSystemTests.DataLayerTest
 {
-    public class BookingStorageTests
+    public class EmployeeStorageTests
     {
         private static DbContextOptions<DbApplicationContext> dbContextOptions = new DbContextOptionsBuilder<DbApplicationContext>()
             .UseInMemoryDatabase(databaseName: "postgres")
             .Options;
 
         DbApplicationContext context;
-        IBookingStorage bookingStorageContext;
+        IEmployeeStorage employeeStorageContext;
 
         [OneTimeSetUp]
         public void Setup()
@@ -20,7 +25,7 @@ namespace BookingSystemTests.DataLayerTest
             context = new DbApplicationContext(dbContextOptions);
             context.Database.EnsureCreated();
 
-            bookingStorageContext = new BookingStorage(context);
+            employeeStorageContext = new EmployeeStorage(context);
 
             ModelBuilder builder = new ModelBuilder();
 
@@ -28,42 +33,29 @@ namespace BookingSystemTests.DataLayerTest
         }
 
         [Test]
-        public void CreateBookingTest()
+        public void CreateEmployeeTest()
         {
             //ARRANGE
-            Booking booking = new Booking { Id = 1, CustomerId = 1, EmployeeId = 1, Date = DateTime.UtcNow, Start = DateTime.UtcNow, End = DateTime.UtcNow };
+            Employee employee = new Employee { Id = 1, Booking = new List<Booking>(), Email = "employee@email.com", Name = "Employee", PhoneNumber = "12345612"};
 
             //ACT
-            var bookingId = bookingStorageContext.createBooking(booking);
+            var employeeId = employeeStorageContext.createEmployee(employee);
 
             //ASSERT
-            Assert.IsNotNull(bookingId);
+            Assert.IsNotNull(employeeId);
         }
 
         [Test]
-        public void CustomerBookingsTest()
-        {
-            //ARRANGE
-            var customerId = 2;
-
-            //ACT
-            var bookings = bookingStorageContext.getBookingsForCustomer(customerId);
-
-            //ASSERT
-            Assert.IsNotNull(bookings);
-        }
-
-        [Test]
-        public void EmployeeBookingsTest()
+        public void GetEmployeeFromIdTest()
         {
             //ARRANGE
             var employeeId = 1;
 
             //ACT
-            var bookings = bookingStorageContext.getBookingsForEmployee(employeeId);
+            var employee = employeeStorageContext.getEmployeeById(employeeId);
 
             //ASSERT
-            Assert.IsNotNull(bookings);
+            Assert.IsNotNull(employee);
         }
 
         [OneTimeTearDown]
@@ -88,7 +80,7 @@ namespace BookingSystemTests.DataLayerTest
                    new Booking { Id = 1, CustomerId = 1, EmployeeId = 1, Date = DateTime.UtcNow, Start = DateTime.UtcNow, End = DateTime.UtcNow },
                    new Booking { Id = 2, CustomerId = 2, EmployeeId = 2, Date = DateTime.UtcNow, Start = DateTime.UtcNow, End = DateTime.UtcNow },
                    new Booking { Id = 3, CustomerId = 2, EmployeeId = 1, Date = DateTime.UtcNow, Start = DateTime.UtcNow, End = DateTime.UtcNow }
-                ); 
+                );
         }
     }
 }
