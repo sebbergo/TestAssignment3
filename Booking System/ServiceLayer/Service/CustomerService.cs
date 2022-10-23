@@ -1,29 +1,27 @@
-﻿using Booking_System.Models;
+﻿using Booking_System.Context;
+using Booking_System.Models;
 using System.Collections.ObjectModel;
 
 namespace Booking_System.Service
 {
     public interface ICustomerService
     {
-        int createCustomer(string firstName, string lastName, DateOnly birthday);
-        CustomerService getCustomerById(int id);
-        Collection<Customer> getCustomersByFirstName(string firstName);
+        Task<int> createCustomer(Customer customer);
     }
     public class CustomerService : ICustomerService
     {
-        public int createCustomer(string firstName, string lastName, DateOnly birthday)
+        private readonly DbApplicationContext _context;
+        public CustomerService(DbApplicationContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public CustomerService getCustomerById(int id)
+        public async Task<int> createCustomer(Customer customer)
         {
-            throw new NotImplementedException();
-        }
+            await _context.Customers.AddAsync(customer);
+            await _context.SaveChangesAsync();
 
-        public Collection<Customer> getCustomersByFirstName(string firstName)
-        {
-            throw new NotImplementedException();
+            return customer.Id;
         }
     }
 }

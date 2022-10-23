@@ -12,26 +12,16 @@ namespace Booking_System.Storage
     {
         Task<int> createBooking(Booking booking);
         Task<List<Booking>> getBookingsForCustomer(int customerId);
-        Task<List<Booking>> getBookingsForEmployee(int customerId);
+        Task<List<Booking>> getBookingsForEmployee(int employeeId);
     }
     public class BookingStorage : IBookingStorage
     {
-        private readonly DbApplicationContext _applicationContext;
+        private readonly DbApplicationContext _context;
 
-        public BookingStorage(DbApplicationContext applicationContext)
+        public BookingStorage(DbApplicationContext context)
         {
-            _applicationContext = applicationContext;
+            _context = context;
         }
-
-        private static readonly Expression<Func<Booking, BookingDTO>> AsBookingDTO =
-        x => new BookingDTO()
-        {
-            CustomerId = x.CustomerId,
-            EmployeeId = x.EmployeeId,
-            Date = x.Date,
-            Start = x.Start,
-            End = x.End
-        };
 
         /// <summary>
         /// Creates a booking
@@ -40,22 +30,22 @@ namespace Booking_System.Storage
         /// <returns>Id of the created booking</returns>
         public async Task<int> createBooking(Booking booking)
         {
-            var bookingSaved = await _applicationContext.Bookings.AddAsync(booking);
-            await _applicationContext.SaveChangesAsync();
+            await _context.Bookings.AddAsync(booking);
+            await _context.SaveChangesAsync();
 
             return booking.Id;
         }
 
         public async Task<List<Booking>> getBookingsForCustomer(int customerId)
         {
-            var bookings = await _applicationContext.Bookings.Where(x => customerId.Equals(x.CustomerId)).ToListAsync();
+            var bookings = await _context.Bookings.Where(x => customerId.Equals(x.CustomerId)).ToListAsync();
 
             return bookings;
         }
 
         public async Task<List<Booking>> getBookingsForEmployee(int employeeId)
         {
-            var bookings = await _applicationContext.Bookings.Where(x => employeeId.Equals(x.CustomerId)).ToListAsync();
+            var bookings = await _context.Bookings.Where(x => employeeId.Equals(x.EmployeeId)).ToListAsync();
 
             return bookings;
         }

@@ -15,9 +15,7 @@ builder.Services.AddDbContext<DbApplicationContext>(options =>
 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IBookingStorage, BookingStorage>();
-builder.Services.AddScoped<ICustomerStorage, CustomerStorage>();
 builder.Services.AddScoped<IEmployeeStorage, EmployeeStorage>();
-builder.Services.AddScoped<INotifications, Notifications>();
 
 var app = builder.Build();
 
